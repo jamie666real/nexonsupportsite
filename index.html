@@ -38,7 +38,57 @@
         <h2>Small server.<br>Big worlds.</h2>
         <p class="about-copy">We are building NexonMC around the part of Minecraft that lasts: shared projects, unexpected journeys, and a community that makes logging on feel easy. The website is still growing, but the conversation is already happening on Discord.</p>
       </section>
+
+      <section class="about wrap" id="report">
+        <h2>Submit a Report</h2>
+        <form id="reportForm">
+          <input type="text" id="username" placeholder="Minecraft / Discord Username" required />
+          <input type="email" id="email" placeholder="Your Email (optional)" />
+          <select id="category">
+            <option value="Bug Report">Bug Report</option>
+            <option value="Player Report">Player Report</option>
+            <option value="Ban Appeal">Ban Appeal</option>
+            <option value="Other">Other</option>
+          </select>
+          <textarea id="description" placeholder="Describe your issue..." required></textarea>
+          <button class="button" type="submit">Submit Report</button>
+        </form>
+        <p id="statusMessage"></p>
+      </section>
     </main>
     <footer><div class="wrap">© 2026 CloudDevs (originally Void Devs) <span aria-hidden="true">·</span> Built for the next block.</div></footer>
+
+    <script>
+      document.getElementById('reportForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const statusMessage = document.getElementById('statusMessage');
+        statusMessage.textContent = 'Sending report...';
+
+        const reportData = {
+          username: document.getElementById('username').value,
+          email: document.getElementById('email').value,
+          category: document.getElementById('category').value,
+          description: document.getElementById('description').value
+        };
+
+        try {
+          const response = await fetch('/api/report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reportData)
+          });
+
+          if (response.ok) {
+            statusMessage.textContent = 'Report submitted successfully!';
+            document.getElementById('reportForm').reset();
+          } else {
+            statusMessage.textContent = 'Error submitting report. Please try again.';
+          }
+        } catch (error) {
+          statusMessage.textContent = 'Network error. Could not reach the server.';
+        }
+      });
+    </script>
   </body>
 </html>
