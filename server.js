@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 const PORT = 3001;
 
-const DISCORD_WEBHOOK_URL = 'YOUR_DISCORD_WEBHOOK_URL';
+const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1571224219604361296/e1hoAPnFhRtoxp_UfCtH0gKugkSp3h34I8wG6kLlLdM-gdu2gviO1rBrQGKmw8hhhqLL';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -51,6 +51,12 @@ app.post('/api/report', async (req, res) => {
 
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'public', 'errors', '404.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Support server running at http://localhost:${PORT}`);
+});
+
 });
 
 app.listen(PORT, () => {
